@@ -1,0 +1,12 @@
+import pygame as pg
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 500
+SCREEN = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+FPS = 60
+
+BIRD_FALL_SPEED = 1
+BIRD_JUMP_HEIGHT = 15
+
+PIPE_SPEED = 3
