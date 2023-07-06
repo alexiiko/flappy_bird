@@ -8,7 +8,10 @@ class Bird():
         self.width = 75
         self.heigth = 75
         
-        self.image = pg.transform.scale(pg.image.load(os.path.join("OneDrive", "Desktop", "flappy_bird_game", "assets", "Bird.png")), (self.width, self.heigth))
+        self.images = [pg.transform.scale(pg.image.load(os.path.join("OneDrive", "Desktop", "flappy_bird_game", "assets", "bird", f"Bird_{i}.png")), (self.width, self.heigth)) for i in range(2)]
+        self.index = 0
+
+        self.image = self.images[self.index]
         self.falling_image = pg.transform.rotate(self.image, 290)
         self.flapping_image = pg.transform.rotate(self.image, 50)
 
@@ -19,9 +22,17 @@ class Bird():
 
         self.active = False
 
+    def animate(self):
+        self.index += 0.05
+        if self.index >= len(self.images):
+            self.index = 0
+        
+        self.image = self.images[int(self.index)]
+
     def restart(self):
         pg.time.wait(1000)
         self.rect.center = (SCREEN_WIDTH//6, SCREEN_HEIGHT//4)
+        self.active = False
 
     def move(self):
         self.image = self.flapping_image
@@ -39,7 +50,7 @@ class Bird():
     def fall(self):
         if self.active:
             self.gravity += BIRD_FALL_SPEED
-            self.rect.y += self.gravity
+            self.rect.y += self.gravity + 0.5
 
     def collision(self):
         pass
@@ -58,6 +69,7 @@ class Bird():
         SCREEN.blit(self.image, self.rect)
 
     def update(self):
+        self.animate()
         self.rotate()
         self.fall()
         self.border()

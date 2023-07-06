@@ -5,12 +5,17 @@ from bird import *
 from score import *
 from pipes import *
 
+#TODO: fix rotation when flapping
+#TODO: implement pipes
+#TODO: implement score
+#TODO: make background move
+
 class Game():
     def __init__(self):
         pg.init()
         pg.font.init()
         pg.display.set_caption("Flappy Bird")
-        pg.display.set_icon(pg.image.load(os.path.join("OneDrive", "Desktop", "flappy_bird_game", "assets", "Bird.png")))
+        pg.display.set_icon(pg.image.load(os.path.join("OneDrive", "Desktop", "flappy_bird_game", "assets", "bird", "Bird_0.png")))
         
         self.background = pg.transform.scale(pg.image.load(os.path.join("OneDrive", "Desktop", "flappy_bird_game", "assets", "Background.jpg")), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
