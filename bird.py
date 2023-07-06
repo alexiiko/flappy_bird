@@ -5,8 +5,8 @@ from pipes import *
 
 class Bird():
     def __init__(self):
-        self.width = 75
-        self.heigth = 75
+        self.width = 65
+        self.heigth = 65
         
         self.images = [pg.transform.scale(pg.image.load(os.path.join("OneDrive", "Desktop", "flappy_bird_game", "assets", "bird", f"Bird_{i}.png")), (self.width, self.heigth)) for i in range(2)]
         self.index = 0
