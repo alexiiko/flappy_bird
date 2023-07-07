@@ -6,10 +6,6 @@ from score import *
 from pipes import *
 from background import *
 
-#TODO: fix rotation when flapping
-#TODO: implement pipes
-#TODO: implement score
-
 class Game():
     def __init__(self):
         pg.init()
@@ -37,6 +33,7 @@ class Game():
         if bird.active:
             upper_pipe.update()
             downer_pipe.update()
+        score.update()
 
     def update(self):
         pg.display.update()

@@ -2,6 +2,7 @@ import pygame as pg
 import os
 from settings import *
 from pipes import *
+from score import *
 
 class Bird():
     def __init__(self):
@@ -13,9 +14,10 @@ class Bird():
 
         self.image = self.images[self.index]
         self.falling_image = pg.transform.rotate(self.image, 290)
-        self.flapping_image = pg.transform.rotate(self.image, 50)
 
-        self.rect = self.falling_image.get_rect(center = (SCREEN_WIDTH//6, SCREEN_HEIGHT//4))
+        self.rect = self.falling_image.get_rect(center = (SCREEN_WIDTH//5, SCREEN_HEIGHT//4))
+
+        self.hitbox = pg.Rect(self.rect.centerx, self.rect.centery, 55, 55)
 
         self.falling = 0
         self.gravity = 0
@@ -30,12 +32,15 @@ class Bird():
         self.image = self.images[int(self.index)]
 
     def restart(self):
-        pg.time.wait(1000)
-        self.rect.center = (SCREEN_WIDTH//6, SCREEN_HEIGHT//4)
+        self.hitbox.center = (SCREEN_WIDTH//6, SCREEN_HEIGHT//4)
         self.active = False
+        score.score = 0
+        score.surface = GAME_FONT.render(f"Score: {score.score}", False, "black")
+        upper_pipe.rect.left = SCREEN_WIDTH
+        downer_pipe.rect.left = SCREEN_WIDTH
+        pg.time.wait(TIME_AFTER_DEATH)
 
     def move(self):
-        self.image = self.flapping_image
         self.gravity = -BIRD_JUMP_HEIGHT
         self.falling = 0
         self.active = True
@@ -50,25 +55,24 @@ class Bird():
     def fall(self):
         if self.active:
             self.gravity += BIRD_FALL_SPEED
-            self.rect.y += self.gravity + 0.5
+            self.hitbox.y += self.gravity + 0.5
 
     def collision(self):
-        pass
-
-    def increase_score(self):
-        pass
-
-    def border(self):
-        if self.rect.bottom <= 0:
+        if self.hitbox.colliderect(upper_pipe.rect) or self.hitbox.colliderect(downer_pipe.rect): 
             self.restart()
 
-        if self.rect.top >= SCREEN_HEIGHT:
+    def border(self):
+        if self.hitbox.bottom <= 0:
+            self.restart()
+        
+        if self.hitbox.top >= SCREEN_HEIGHT:
             self.restart()
 
     def draw(self):
-        SCREEN.blit(self.image, self.rect)
+        SCREEN.blit(self.image, self.hitbox)
 
     def update(self):
+        self.collision()
         self.animate()
         self.rotate()
         self.fall()
